@@ -14,7 +14,7 @@ class DeckList extends Component {
   componentDidMount () {
     const { dispatch } = this.props;
 
-    console.log('I am here');
+    console.log('Calling fetchDecks');
     fetchDecks().then((decks) => dispatch(getDecks(decks)))
   }
 

@@ -8,7 +8,7 @@ import {
 function decks (state = {}, action) {
   switch (action.type) {
     case GET_DECKS :
-      console.log(action);
+      console.log("Inside GET_DECKS REDUCER");
       return {
         ...state,
         ...action.decks,
@@ -17,7 +17,7 @@ function decks (state = {}, action) {
       console.log(action);
       return {
         ...state,
-        ...action.decks
+        [action.deck.title]: { ...action.deck }
       }
     default :
       return state
