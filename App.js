@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { StackNavigator, TabNavigator } from 'react-navigation';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers';
 import DeckList from './components/DeckList';
@@ -71,10 +71,22 @@ const MainNavigator = StackNavigator({
 }
 });
 
+const logger = store => next => action => {
+	console.group(action.type);
+	console.info('dispatching', action);
+	let result = next(action);
+	console.log('next state', store.getState());
+	console.groupEnd(action.type);
+	return result;
+};
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
 export default class App extends React.Component {
   render() {
     return (
-      <Provider store={createStore(reducer)}>
+      <Provider store={createStore(reducer,
+        composeEnhancers(applyMiddleware(logger)))}>
         <View style={styles.container}>
           <FlashCardsStatusBar backgroundColor={purple} barStyle='light-content' />
           <MainNavigator />
