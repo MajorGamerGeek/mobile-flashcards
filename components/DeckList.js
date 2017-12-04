@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import Deck from './Deck';
+import DeckItem from './DeckItem';
 import { fetchDecks } from '../utils/api';
 import { getDecks } from '../actions';
 import { AppLoading } from 'expo';
@@ -11,11 +11,12 @@ class DeckList extends Component {
     ready: false
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props;
 
     console.log('Calling fetchDecks');
     fetchDecks().then((decks) => dispatch(getDecks(decks)))
+      .then(() => this.setState(() => ({ ready: true })));
   }
 
   render() {
@@ -23,24 +24,33 @@ class DeckList extends Component {
     const { ready } = this.state
 
     console.log(decks);
-
     console.log(ready);
+
     if (ready === false) {
       return <AppLoading />
     }
 
     return (
       <View style={styles.container}>
-        <Deck />
+        {decks.length > 0 &&
+          <FlatList data={decks} keyExtractor={item => item.title}
+            renderItem={({ item }) => <DeckItem deck={item}
+              navigation={this.props.navigation} />} />}
       </View>
     )
   }
 }
 
-function mapStateToProps (decks) {
-  return {
-    decks
+function mapStateToProps(decks) {
+  const decksArr = [];
+
+  for (let deck in decks) {
+    decksArr.push(decks[deck]);
   }
+
+  return {
+    decks: decksArr
+  };
 };
 
 export default connect(mapStateToProps)(DeckList);
