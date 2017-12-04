@@ -6,7 +6,7 @@ const NOTIFICATION_KEY = 'mobileFlashCards:notifications';
 function createStudyNotification () {
   return {
     title: 'Hey study today!',
-    body: "👋 Don't forget to study for today!",
+    body: "👋 Don't forget to study today!",
     ios: {
       sound: true
     },
@@ -21,7 +21,7 @@ function createStudyNotification () {
 
 export function getDailyReminderValue() {
   return {
-    today: "👋 Don't forget to study for today!"
+    today: "👋 Don't forget to study today!"
   }
 }
 

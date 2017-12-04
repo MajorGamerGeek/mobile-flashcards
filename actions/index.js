@@ -14,6 +14,7 @@ export function addDeck (deck) {
 export function addCardToDeck (deckId, card) {
   return {
     type: ADD_CARD_TO_DECK,
+    deckId,
     card
   }
 };

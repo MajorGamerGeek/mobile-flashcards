@@ -11,29 +11,28 @@ class NewDeck extends Component {
     super(props);
 
     this.state = {
-      title: 'Best Title Ever!',
+      title: '',
       questions: []
     }
   }
 
   submit = () => {
-    const key = this.state.title    
-    const deck = this.state
+    const { navigation } = this.props;
+    const key = this.state.title;
+    const deck = this.state;
 
-    console.log(key);
-    console.log(deck);
+    if (deck && deck.title !== '')
+    {
+      this.props.dispatch(addDeck({ [key]: deck }));
 
-    this.props.dispatch(addDeck({
-      [key]: deck
-    }))
+      this.setState(() => ({ title: '' }));
+      
+      submitDeck({ key, deck });
 
-    this.setState(() => ({ title: 'ResetState' }));
-
-    submitDeck({ key, deck });
-
-    //TODO GO TO new deck
+      navigation.navigate("Deck", { title: key });
+    }
   }
-  
+
   render() {
     return (
       <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
@@ -53,12 +52,7 @@ class NewDeck extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-  }
-}
-
-export default connect(mapStateToProps)(NewDeck);
+export default connect()(NewDeck);
 
 const styles = StyleSheet.create({
   container: {

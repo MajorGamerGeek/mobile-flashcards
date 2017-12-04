@@ -20,7 +20,7 @@ class Deck extends Component {
         <Text>{deck.title}</Text>
         <Text style={styles.cards}>{deck.questions && deck.questions.length } Cards</Text>
         <TextButton onPress={() => navigation.navigate("NewCard", { deckId: deck.title })}>Add Card</TextButton>
-        <TextButton>Start Quiz</TextButton>
+        <TextButton onPress={() => navigation.navigate("Quiz", { deckId: deck.title })}>Start Quiz</TextButton>
       </View>
     )
   }

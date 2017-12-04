@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
-import { addCardToDeck } from '../actions'
-import { submitCard } from '../utils/api'
+import { addCardToDeck } from '../actions';
+import { submitCardToDeck } from '../utils/api';
 import { black } from '../utils/colors';
 
 class NewCard extends Component {
@@ -17,20 +17,23 @@ class NewCard extends Component {
   }
 
   submit = () => {
-    const key = this.state.title
-    const card = this.state
+    const { deck, deckId, navigation } = this.props;
+    const card = this.state;
 
-    console.log(key);
-    console.log(card);
-
-    this.props.dispatch(addCardToDeck(key, card))
+    console.log(deck);
+    console.log(card);  
+    this.props.dispatch(addCardToDeck(deckId, card))
 
     this.setState(() => ({ question: '', anwser: '' }));
 
-    // TODO: Save Card to deck
+    submitCardToDeck(deckId, card);
+
+    navigation.navigate("Deck", { title: deckId });
   }
   
   render() {
+    const { deck } = this.props;
+
     return (
       <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
         <View style={styles.container}>
@@ -55,16 +58,20 @@ class NewCard extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state, { navigation }) {
+  const { deckId } = navigation.state.params;
+
   return {
-  }
-}
+    deck: state[deckId],
+    deckId
+  };
+};
 
 export default connect(mapStateToProps)(NewCard);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

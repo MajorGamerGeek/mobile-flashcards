@@ -12,3 +12,11 @@ export function submitDeck ({ key, deck }) {
     [key]: deck
   }))
 }
+
+export function submitCardToDeck (deckId, card) {
+  return AsyncStorage.getItem(FLASH_CARD_STORAGE_KEY).then(decks => {
+    const deck = JSON.parse(decks);
+    deck[deckId].questions.push(card);
+    AsyncStorage.setItem(FLASH_CARD_STORAGE_KEY, JSON.stringify(deck));
+  });
+}
