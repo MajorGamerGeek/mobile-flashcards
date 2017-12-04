@@ -14,8 +14,7 @@ export default function TextButton ({ children, onPress, style = {} }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: blue
+    backgroundColor: white
   },
   btn: {
     color: white,
@@ -33,6 +32,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   iosBtn: {
+    margin: 5,
     backgroundColor: purple,
     borderColor: white,
     borderWidth: 1,

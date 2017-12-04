@@ -6,11 +6,12 @@ import { Provider } from 'react-redux';
 import reducer from './reducers';
 import DeckList from './components/DeckList';
 import NewDeck from './components/NewDeck';
+import NewCard from './components/NewCard';
 import Deck from './components/Deck';
 import { white, purple } from './utils/colors';
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Constants } from 'expo';
-
+import { setLocalNotification } from './utils/notifications';
 
 function FlashCardsStatusBar({ backgroundColor, ...props }) {
   return (
@@ -62,7 +63,16 @@ const MainNavigator = StackNavigator({
   Deck: {
     screen: Deck,
     navigationOptions: {
-      title: "Deck",
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    },
+  },
+  NewCard: {
+    screen: NewCard,
+    navigationOptions: {
+      headerTitle: 'Add Card',
       headerTintColor: white,
       headerStyle: {
         backgroundColor: purple,
@@ -83,6 +93,10 @@ const logger = store => next => action => {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export default class App extends React.Component {
+  componentDidMount () {
+    setLocalNotification();
+  }
+
   render() {
     return (
       <Provider store={createStore(reducer,

@@ -30,6 +30,8 @@ class NewDeck extends Component {
     this.setState(() => ({ title: 'ResetState' }));
 
     submitDeck({ key, deck });
+
+    //TODO GO TO new deck
   }
   
   render() {

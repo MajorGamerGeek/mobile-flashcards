@@ -1,1 +1,0 @@
-export const FLASH_CARD_STORAGE_KEY = 'mobileFlashCards:decks';
