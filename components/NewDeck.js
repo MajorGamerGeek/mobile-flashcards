@@ -25,7 +25,7 @@ class NewDeck extends Component {
     {
       this.props.dispatch(addDeck({ [key]: deck }));
 
-      this.setState(() => ({ title: '' }));
+      this.setState(() => ({ title: '', questions: [] }));
       
       submitDeck({ key, deck });
 

@@ -23,12 +23,12 @@ class Quiz extends Component {
     const { correctCount, questionNumber } = this.state;
 
     if (a === 'correct') {
-      this.setState(() => ({ correctCount: correctCount++ }));
+      this.setState(() => ({ correctCount: correctCount }));
     } else {
-      this.setState({ correctCount: correctCount-- }));
+      this.setState(() => ({ correctCount: correctCount }));
     }
 
-    this.setState(() => ({ questionNumber: questionNumber++ }));
+    this.setState(() => ({ questionNumber: questionNumber }));
   }
 
   render() {
@@ -46,8 +46,8 @@ class Quiz extends Component {
               <Text>{deck.questions[questionNumber].question}</Text>
               <Text>{deck.questions[questionNumber].anwser}</Text>
             </View>) }
-        <TextButton onPress={this.anwser('correct')}>Correct</TextButton>
-        <TextButton onPress={this.anwser('incorrect')}>Incorrect</TextButton>
+        <TextButton>Correct</TextButton>
+        <TextButton>Incorrect</TextButton>
       </View>
     )
   }
