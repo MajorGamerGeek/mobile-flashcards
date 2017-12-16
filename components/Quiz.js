@@ -51,6 +51,14 @@ class Quiz extends Component {
     this.setState(() => ({ showAnwser: true }));
   }
 
+  startOver = () => {
+    this.setState(() => ({
+      questionNumber: 0,
+      correctCount: 0,
+      showAnwser: false
+    }));
+  };
+
   render() {
     const { deck, navigation } = this.props;
     const { correctCount, questionNumber, showAnwser } = this.state;
@@ -74,6 +82,8 @@ class Quiz extends Component {
           <View>
             <Text>Completed Quiz Well DONE!</Text>
             <Text>{Math.round(((correctCount / deck.questions.length) * 100) * 100) / 100}% Correct</Text>
+            <TextButton onPress={this.startOver}>Start Over</TextButton>
+            <TextButton>Select a Deck</TextButton>
           </View>}
         </View>}
       </View>
