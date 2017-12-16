@@ -9,7 +9,8 @@ class Quiz extends Component {
 
     this.state = {
       questionNumber: 0,
-      correctCount: 0
+      correctCount: 0,
+      showAnwser: false
     }
   }
 
@@ -37,25 +38,26 @@ class Quiz extends Component {
     console.log(prevState.questionNumber);
     console.log(prevState.correctCount);
 
-    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount + 1 }));
+    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount + 1, showAnwser: false }));
   }
 
   incorrect = () => {
     const prevState = this.state;
 
-    console.log(prevState.questionNumber);
-    console.log(prevState.correctCount);
+    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, showAnwser: false }));
+  }
 
-    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount - 1 }));
+  showAnwser = () => {
+    this.setState(() => ({ showAnwser: true }));
   }
 
   render() {
     const { deck, navigation } = this.props;
-    const { correctCount, questionNumber } = this.state;
+    const { correctCount, questionNumber, showAnwser } = this.state;
 
     console.log(deck);
     console.log(correctCount);
-    console.log(questionNumber);
+    console.log(deck.questions.length);
 
     return (
       <View style={styles.container}>
@@ -65,14 +67,13 @@ class Quiz extends Component {
             <Text>{questionNumber + 1} / {deck.questions.length}</Text>
             <Text>{correctCount} - Correct</Text>
             <Text>{deck.questions[questionNumber].question}</Text>
-            <Text>{deck.questions[questionNumber].anwser}</Text>
+            <Text>{showAnwser ? deck.questions[questionNumber].anwser : <Text onPress={this.showAnwser}>Show Anwser</Text>}</Text>
             <TextButton onPress={this.correct}>Correct</TextButton>
             <TextButton onPress={this.incorrect}>Incorrect</TextButton>
           </View> :
           <View>
             <Text>Completed Quiz Well DONE!</Text>
-              <Text>{correctCount} Total Correct</Text>
-              <Text>{deck.questions.length - correctCount} Total Incorrect</Text>
+            <Text>{Math.round(((correctCount / deck.questions.length) * 100) * 100) / 100}% Correct</Text>
           </View>}
         </View>}
       </View>
