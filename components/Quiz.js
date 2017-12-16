@@ -31,6 +31,24 @@ class Quiz extends Component {
     this.setState(() => ({ questionNumber: questionNumber }));
   }
 
+  correct = () => {
+    const prevState = this.state;
+
+    console.log(prevState.questionNumber);
+    console.log(prevState.correctCount);
+
+    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount + 1 }));
+  }
+
+  incorrect = () => {
+    const prevState = this.state;
+
+    console.log(prevState.questionNumber);
+    console.log(prevState.correctCount);
+
+    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount - 1 }));
+  }
+
   render() {
     const { deck, navigation } = this.props;
     const { correctCount, questionNumber } = this.state;
@@ -41,13 +59,22 @@ class Quiz extends Component {
 
     return (
       <View style={styles.container}>
-        {deck.questions.length > 0 && (<View>
-              <Text>{correctCount} - Correct</Text>
-              <Text>{deck.questions[questionNumber].question}</Text>
-              <Text>{deck.questions[questionNumber].anwser}</Text>
-            </View>) }
-        <TextButton>Correct</TextButton>
-        <TextButton>Incorrect</TextButton>
+      {deck.questions.length > 0 && <View>
+        {questionNumber < deck.questions.length ?
+          <View>
+            <Text>{questionNumber + 1} / {deck.questions.length}</Text>
+            <Text>{correctCount} - Correct</Text>
+            <Text>{deck.questions[questionNumber].question}</Text>
+            <Text>{deck.questions[questionNumber].anwser}</Text>
+            <TextButton onPress={this.correct}>Correct</TextButton>
+            <TextButton onPress={this.incorrect}>Incorrect</TextButton>
+          </View> :
+          <View>
+            <Text>Completed Quiz Well DONE!</Text>
+              <Text>{correctCount} Total Correct</Text>
+              <Text>{deck.questions.length - correctCount} Total Incorrect</Text>
+          </View>}
+        </View>}
       </View>
     )
   }
