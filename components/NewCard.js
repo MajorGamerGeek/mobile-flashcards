@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { addCardToDeck } from '../actions';
@@ -36,7 +36,7 @@ class NewCard extends Component {
 
     return (
       <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 200 }>
           <Text style={styles.question}>Question</Text>
           <TextInput
             style={styles.input}
@@ -52,7 +52,7 @@ class NewCard extends Component {
           <TextButton onPress={this.submit}>
             Add Card
           </TextButton>
-        </View>
+        </KeyboardAvoidingView>
       </View>
     )
   }

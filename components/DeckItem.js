@@ -10,7 +10,7 @@ class DeckItem extends Component {
     return (
       <TouchableOpacity style={styles.deck} onPress={() => navigation.navigate("Deck", { title: deck.title })}>
         <Text style={styles.deckTitle}>{deck.title}</Text>
-        <Text style={styles.cards}>{deck.questions && deck.questions.length } Cards</Text>
+        <Text style={styles.cards}>{deck.questions && deck.questions.length } Card(s)</Text>
       </TouchableOpacity>
     )
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { addDeck } from '../actions'
@@ -36,7 +36,7 @@ class NewDeck extends Component {
   render() {
     return (
       <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 175 }>
           <Text style={styles.question}>What is the title of your new deck?</Text>
           <TextInput
             style={styles.input}
@@ -46,7 +46,7 @@ class NewDeck extends Component {
           <TextButton onPress={this.submit}>
             Add Deck
           </TextButton>
-        </View>
+        </KeyboardAvoidingView>
       </View>
     )
   }
@@ -56,9 +56,9 @@ export default connect()(NewDeck);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   question: {
     fontSize: 30,
