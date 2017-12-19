@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 
@@ -10,7 +10,10 @@ class Quiz extends Component {
     this.state = {
       questionNumber: 0,
       correctCount: 0,
-      showAnwser: false
+      showAnwser: false,
+      opacity: new Animated.Value(0),
+      width: new Animated.Value(0),
+      height: new Animated.Value(0)
     }
   }
 
@@ -48,20 +51,29 @@ class Quiz extends Component {
   }
 
   showAnwser = () => {
+    const { opacity, width, height } = this.state;
+
     this.setState(() => ({ showAnwser: true }));
+    Animated.timing(opacity, { toValue: 1, duration: 1000 }).start();
+
+    Animated.spring(width, { toValue: 300, speed: 5}).start();
+    Animated.spring(height, { toValue: 300, speed: 5}).start();
   }
 
   startOver = () => {
     this.setState(() => ({
       questionNumber: 0,
       correctCount: 0,
-      showAnwser: false
+      showAnwser: false,
+      opacity: new Animated.Value(0),
+      width: new Animated.Value(0),
+      height: new Animated.Value(0)
     }));
   };
 
   render() {
     const { deck, navigation } = this.props;
-    const { correctCount, questionNumber, showAnwser } = this.state;
+    const { correctCount, questionNumber, showAnwser, opacity, width, height } = this.state;
 
     console.log(deck);
     console.log(correctCount);
@@ -75,7 +87,7 @@ class Quiz extends Component {
             <Text>{questionNumber + 1} / {deck.questions.length}</Text>
             <Text>{correctCount} - Correct</Text>
             <Text>{deck.questions[questionNumber].question}</Text>
-            <Text>{showAnwser ? deck.questions[questionNumber].anwser : <Text onPress={this.showAnwser}>Show Anwser</Text>}</Text>
+            {showAnwser ? <Animated.Text style="[deck.questions[questionNumber].question, {opacity}]">{deck.questions[questionNumber].anwser}</Animated.Text> : <Text onPress={this.showAnwser}>Show Anwser</Text>}
             <TextButton onPress={this.correct}>Correct</TextButton>
             <TextButton onPress={this.incorrect}>Incorrect</TextButton>
           </View> :

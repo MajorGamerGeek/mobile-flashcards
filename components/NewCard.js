@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { addCardToDeck } from '../actions';
@@ -20,15 +20,17 @@ class NewCard extends Component {
     const { deck, deckId, navigation } = this.props;
     const card = this.state;
 
-    console.log(deck);
-    console.log(card);  
-    this.props.dispatch(addCardToDeck(deckId, card))
+    if (card && card.question !== '' && card.anwser !== '')
+    {
+      this.props.dispatch(addCardToDeck(deckId, card))
 
-    this.setState(() => ({ question: '', anwser: '' }));
+      this.setState(() => ({ question: '', anwser: '' }));
 
-    submitCardToDeck(deckId, card);
+      submitCardToDeck(deckId, card);
 
-    navigation.navigate("Deck", { title: deckId });
+      Keyboard.dismiss();
+      navigation.navigate("Deck", { title: deckId });
+    }
   }
   
   render() {

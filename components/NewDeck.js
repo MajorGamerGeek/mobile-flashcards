@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { addDeck } from '../actions'
@@ -29,6 +29,7 @@ class NewDeck extends Component {
       
       submitDeck({ key, deck });
 
+      Keyboard.dismiss();
       navigation.navigate("Deck", { title: key });
     }
   }
