@@ -44,12 +44,16 @@ class NewCard extends Component {
             style={styles.input}
             onChangeText={(question) => this.setState({ question })}
             value={this.state.question}
+            autoFocus={true}
+            blurOnSubmit={false}
+            returnKeyType="next"
           />
           <Text style={styles.question}>Anwser</Text>
           <TextInput
             style={styles.input}
             onChangeText={(anwser) => this.setState({ anwser })}
             value={this.state.anwser}
+            onSubmitEditing={this.submit}
           />
           <TextButton onPress={this.submit}>
             Add Card

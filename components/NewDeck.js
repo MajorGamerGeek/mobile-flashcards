@@ -43,6 +43,7 @@ class NewDeck extends Component {
             style={styles.input}
             onChangeText={(title) => this.setState({ title })}
             value={this.state.title}
+            onSubmitEditing={this.submit}
           />
           <TextButton onPress={this.submit}>
             Add Deck
