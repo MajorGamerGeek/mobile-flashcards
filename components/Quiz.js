@@ -10,7 +10,6 @@ class Quiz extends Component {
     this.state = {
       questionNumber: 0,
       correctCount: 0,
-      showAnwser: false,
       opacity: new Animated.Value(0),
       width: new Animated.Value(0),
       height: new Animated.Value(0)
@@ -37,43 +36,55 @@ class Quiz extends Component {
 
   correct = () => {
     const prevState = this.state;
-
-    console.log(prevState.questionNumber);
-    console.log(prevState.correctCount);
-
-    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount + 1, showAnwser: false }));
+    
+    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount + 1, opacity: new Animated.Value(0), width: new Animated.Value(0), height: new Animated.Value(0) }));
   }
 
   incorrect = () => {
     const prevState = this.state;
 
-    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, showAnwser: false }));
+    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, opacity: new Animated.Value(0), width: new Animated.Value(0), height: new Animated.Value(0) }));
   }
 
   showAnwser = () => {
-    const { opacity, width, height } = this.state;
+    const { opacity, width, height, frontInterpolate } = this.state;
 
-    this.setState(() => ({ showAnwser: true }));
-    Animated.timing(opacity, { toValue: 1, duration: 1000 }).start();
+    Animated.sequence([
+      Animated.spring(width, { toValue: 350, speed: 3}),
+      Animated.spring(height, { toValue: 350, speed: 3}),
+      Animated.timing(opacity, { toValue: 1, duration: 500 })
+    ]).start();
+  }
 
-    Animated.spring(width, { toValue: 300, speed: 5}).start();
-    Animated.spring(height, { toValue: 300, speed: 5}).start();
+  showQuestion = () => {
+    const { opacity, width, height, frontInterpolate } = this.state;
+
+    Animated.timing(opacity, { toValue: 0, duration: 1000 }).start();
+
+    Animated.spring(width, { toValue: 0, speed: 3 }).start();
+    Animated.spring(height, { toValue: 0, speed: 3 }).start();
   }
 
   startOver = () => {
     this.setState(() => ({
       questionNumber: 0,
       correctCount: 0,
-      showAnwser: false,
       opacity: new Animated.Value(0),
       width: new Animated.Value(0),
-      height: new Animated.Value(0)
+      height: new Animated.Value(0),
+      interpolate: new Animated.Value(0),
     }));
   };
 
+  navigateHome = () => {
+    const { navigation } = this.props;
+    
+    navigation.navigate("Home");
+  }
+
   render() {
-    const { deck, navigation } = this.props;
-    const { correctCount, questionNumber, showAnwser, opacity, width, height } = this.state;
+    const { deck,  } = this.props;
+    const { correctCount, questionNumber, opacity, width, height } = this.state;
 
     console.log(deck);
     console.log(correctCount);
@@ -84,10 +95,16 @@ class Quiz extends Component {
       {deck.questions.length > 0 && <View>
         {questionNumber < deck.questions.length ?
           <View>
-            <Text>{questionNumber + 1} / {deck.questions.length}</Text>
-            <Text>{correctCount} - Correct</Text>
-            <Text>{deck.questions[questionNumber].question}</Text>
-            {showAnwser ? <Animated.Text style="[deck.questions[questionNumber].question, {opacity}]">{deck.questions[questionNumber].anwser}</Animated.Text> : <Text onPress={this.showAnwser}>Show Anwser</Text>}
+            <Animated.View style={[styles.question]}>
+              <Text>{questionNumber + 1} / {deck.questions.length}</Text>
+              <Text>{correctCount} - Correct</Text>
+              <Text>{deck.questions[questionNumber].question}</Text>
+              <Text style={styles.textStyles} onPress={this.showAnwser}>Show Anwser</Text>
+              <Animated.View style={[styles.anwser, {opacity, width, height}]}>
+                <Text>{deck.questions[questionNumber].anwser}</Text>
+                <Text style={styles.textStyles} onPress={this.showQuestion}>Question</Text>
+              </Animated.View> 
+            </Animated.View>
             <TextButton onPress={this.correct}>Correct</TextButton>
             <TextButton onPress={this.incorrect}>Incorrect</TextButton>
           </View> :
@@ -95,7 +112,7 @@ class Quiz extends Component {
             <Text>Completed Quiz Well DONE!</Text>
             <Text>{Math.round(((correctCount / deck.questions.length) * 100) * 100) / 100}% Correct</Text>
             <TextButton onPress={this.startOver}>Start Over</TextButton>
-            <TextButton>Select a Deck</TextButton>
+            <TextButton onPress={this.navigateHome}>Select a Deck</TextButton>
           </View>}
         </View>}
       </View>
@@ -118,4 +135,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  textStyles: {
+    color: '#aef',
+    fontSize: 20
+  },
+  question: {
+    height: 400,
+    width: 400,
+    backgroundColor: 'green',
+    backfaceVisibility: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  anwser: {
+    backgroundColor: 'red',
+    position: 'absolute',
+    top: 0
+  }
 });
