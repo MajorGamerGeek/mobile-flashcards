@@ -12,8 +12,23 @@ class Quiz extends Component {
       correctCount: 0,
       opacity: new Animated.Value(0),
       width: new Animated.Value(0),
-      height: new Animated.Value(0)
+      height: new Animated.Value(0),
+      rotate: new Animated.Value(0)
     }
+  }
+
+  componentWillMount() {
+    const { rotate } = this.state;
+
+    this.frontInterpolate = rotate.interpolate({
+      inputRange: [0, 180],
+      outputRange: ['0deg', '180deg']
+    });
+
+    this.backInterpolate = rotate.interpolate({
+      inputRange: [0, 180],
+      outputRange: ['180deg', '360deg']
+    });
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -36,43 +51,33 @@ class Quiz extends Component {
 
   correct = () => {
     const prevState = this.state;
-    
-    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount + 1, opacity: new Animated.Value(0), width: new Animated.Value(0), height: new Animated.Value(0) }));
+
+    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount + 1, rotate: new Animated.Value(0) }));
   }
 
   incorrect = () => {
     const prevState = this.state;
 
-    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, opacity: new Animated.Value(0), width: new Animated.Value(0), height: new Animated.Value(0) }));
+    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, rotate: new Animated.Value(0) }));
   }
 
   showAnwser = () => {
-    const { opacity, width, height, frontInterpolate } = this.state;
+    const { rotate } = this.state;
 
-    Animated.sequence([
-      Animated.spring(width, { toValue: 350, speed: 3}),
-      Animated.spring(height, { toValue: 350, speed: 3}),
-      Animated.timing(opacity, { toValue: 1, duration: 500 })
-    ]).start();
+    Animated.spring(rotate, { toValue: 180, friction: 7, tension: 10 }).start();
   }
 
   showQuestion = () => {
-    const { opacity, width, height, frontInterpolate } = this.state;
+    const { rotate } = this.state;
 
-    Animated.timing(opacity, { toValue: 0, duration: 1000 }).start();
-
-    Animated.spring(width, { toValue: 0, speed: 3 }).start();
-    Animated.spring(height, { toValue: 0, speed: 3 }).start();
+    Animated.spring(rotate, { toValue: 0, friction: 7, tension: 10 }).start();
   }
 
   startOver = () => {
     this.setState(() => ({
       questionNumber: 0,
       correctCount: 0,
-      opacity: new Animated.Value(0),
-      width: new Animated.Value(0),
-      height: new Animated.Value(0),
-      interpolate: new Animated.Value(0),
+      rotate: new Animated.Value(0)
     }));
   };
 
@@ -83,27 +88,43 @@ class Quiz extends Component {
   }
 
   render() {
-    const { deck,  } = this.props;
-    const { correctCount, questionNumber, opacity, width, height } = this.state;
+    const { deck } = this.props;
+    const { correctCount, questionNumber } = this.state;
 
     console.log(deck);
     console.log(correctCount);
     console.log(deck.questions.length);
+
+    const frontRotateStyle = {
+      transform: [
+        {
+          rotateY: this.frontInterpolate
+        }
+      ]
+    };
+
+    const backRotateStyle = {
+      transform: [
+        {
+          rotateY: this.backInterpolate
+        }
+      ]
+    };
 
     return (
       <View style={styles.container}>
       {deck.questions.length > 0 && <View>
         {questionNumber < deck.questions.length ?
           <View>
-            <Animated.View style={[styles.question]}>
+            <Animated.View style={[styles.question, frontRotateStyle]}>
               <Text>{questionNumber + 1} / {deck.questions.length}</Text>
               <Text>{correctCount} - Correct</Text>
               <Text>{deck.questions[questionNumber].question}</Text>
               <Text style={styles.textStyles} onPress={this.showAnwser}>Show Anwser</Text>
-              <Animated.View style={[styles.anwser, {opacity, width, height}]}>
+              <Animated.View style={[styles.anwser, backRotateStyle]}>
                 <Text>{deck.questions[questionNumber].anwser}</Text>
                 <Text style={styles.textStyles} onPress={this.showQuestion}>Question</Text>
-              </Animated.View> 
+              </Animated.View>
             </Animated.View>
             <TextButton onPress={this.correct}>Correct</TextButton>
             <TextButton onPress={this.incorrect}>Incorrect</TextButton>
@@ -145,11 +166,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     backfaceVisibility: 'hidden',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   anwser: {
     backgroundColor: 'red',
     position: 'absolute',
-    top: 0
+    backfaceVisibility: 'hidden',
+    top: 0,
   }
 });
