@@ -13,8 +13,7 @@ class DeckList extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-
-    console.log('Calling fetchDecks');
+    
     fetchDecks().then((decks) => dispatch(getDecks(decks)))
       .then(() => this.setState(() => ({ ready: true })));
   }
