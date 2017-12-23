@@ -1,18 +1,12 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers';
-import DeckList from './components/DeckList';
-import NewDeck from './components/NewDeck';
-import NewCard from './components/NewCard';
-import Quiz from './components/Quiz';
-import Deck from './components/Deck';
-import { white, purple } from './utils/colors';
-import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Constants } from 'expo';
+import { MainNavigator } from './utils/navigation';
 import { setLocalNotification } from './utils/notifications';
+import { white, purple } from './utils/colors';
 
 function FlashCardsStatusBar({ backgroundColor, ...props }) {
   return (
@@ -21,75 +15,6 @@ function FlashCardsStatusBar({ backgroundColor, ...props }) {
     </View>
   )
 }
-
-const Tabs = TabNavigator({
-  Home: {
-    screen: DeckList,
-    navigationOptions: {
-      tabBarLabel: 'Decks',
-      tabBarIcon: ({ tintColor }) => <Ionicons name='ios-bookmarks' size={30} color={tintColor} />
-    },
-  },
-  NewDeck: {
-    screen: NewDeck,
-    navigationOptions: {
-      tabBarLabel: 'New Deck',
-      tabBarIcon: ({ tintColor }) => <Ionicons name='ios-bookmarks' size={30} color={tintColor} />
-    },
-  },
-}, {
-    navigationOptions: {
-      header: null
-    },
-    tabBarOptions: {
-      activeTintColor: Platform.OS === 'ios' ? purple : white,
-      style: {
-        height: 56,
-        backgroundColor: Platform.OS === 'ios' ? white : purple,
-        shadowColor: 'rgba(0, 0, 0, 0.24)',
-        shadowOffset: {
-          width: 0,
-          height: 3
-        },
-        shadowRadius: 6,
-        shadowOpacity: 1
-      }
-    }
-  });
-
-const MainNavigator = StackNavigator({
-  Home: {
-    screen: Tabs,
-  },
-  Deck: {
-    screen: Deck,
-    navigationOptions: {
-      headerTintColor: white,
-      headerStyle: {
-        backgroundColor: purple,
-      }
-    },
-  },
-  NewCard: {
-    screen: NewCard,
-    navigationOptions: {
-      headerTitle: 'Add Card',
-      headerTintColor: white,
-      headerStyle: {
-        backgroundColor: purple,
-      }
-    },
-  },
-  Quiz: {
-    screen: Quiz,
-    navigationOptions: {
-      headerTintColor: white,
-      headerStyle: {
-        backgroundColor: purple,
-      }
-    },
-  }
-});
 
 const logger = store => next => action => {
   console.group(action.type);

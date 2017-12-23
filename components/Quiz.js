@@ -103,10 +103,10 @@ class Quiz extends Component {
     }));
   };
 
-  navigateHome = () => {
+  navigateToDeck = () => {
     const { navigation } = this.props;
 
-    navigation.navigate("Home");
+    navigation.goBack();
   }
 
   render() {
@@ -151,7 +151,7 @@ class Quiz extends Component {
               <Text style={styles.textStyles}>You have completed the {deck.title} Quiz!</Text>
               <Text style={styles.textStyles}>{Math.round(((correctCount / deck.questions.length) * 100) * 100) / 100}% Correct</Text>
               <TextButton onPress={this.startOver}>Start Over</TextButton>
-              <TextButton onPress={this.navigateHome}>Select a Deck</TextButton>
+              <TextButton onPress={this.navigateToDeck}>Back to Deck</TextButton>
             </View>}
         </View>}
       </View>

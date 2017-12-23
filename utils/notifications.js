@@ -3,21 +3,19 @@ import { Permissions, Notifications } from "expo";
 
 const NOTIFICATION_KEY = 'mobileFlashCards:notifications';
 
-function createStudyNotification () {
-  return {
-    title: 'Hey study today!',
-    body: "👋 Don't forget to study today!",
-    ios: {
-      sound: true
-    },
-    android: {
-      sound: true,
-      priority: 'high',
-      sticky: false,
-      vibrate: true
-    }
+const createStudyNotification = () => ({
+  title: 'Hey study today!',
+  body: "👋 Don't forget to study today!",
+  ios: {
+    sound: true
+  },
+  android: {
+    sound: true,
+    priority: 'high',
+    sticky: false,
+    vibrate: true
   }
-}
+})
 
 export function getDailyReminderValue() {
   return {
@@ -25,12 +23,12 @@ export function getDailyReminderValue() {
   }
 }
 
-export function clearLocalNotification () {
+export function clearLocalNotification() {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)
     .then(Notifications.cancelAllScheduledNotificationsAsync);
 }
 
-export function setLocalNotification () {
+export function setLocalNotification() {
   AsyncStorage.getItem(NOTIFICATION_KEY)
     .then(JSON.parse)
     .then((data) => {

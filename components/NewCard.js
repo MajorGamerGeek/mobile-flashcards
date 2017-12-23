@@ -28,7 +28,7 @@ class NewCard extends Component {
       submitCardToDeck(deckId, card);
 
       Keyboard.dismiss();
-      navigation.navigate("Deck", { title: deckId });
+      navigation.goBack();
     }
   }
 
