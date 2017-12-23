@@ -28,6 +28,8 @@ class Quiz extends Component {
       outputRange: ['180deg', '360deg']
     });
 
+    // Found this work around from vnil @ https://github.com/facebook/react-native/issues/1973 
+    // because backfaceVisibility: 'hidden' does not work on android.
     this.frontOpacity = cardRotate.interpolate({
       inputRange: [89, 90],
       outputRange: [1, 0]
