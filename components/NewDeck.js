@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { addDeck } from '../actions'
@@ -21,12 +21,11 @@ class NewDeck extends Component {
     const key = this.state.title;
     const deck = this.state;
 
-    if (deck && deck.title !== '')
-    {
+    if (deck && deck.title !== '') {
       this.props.dispatch(addDeck({ [key]: deck }));
 
       this.setState(() => ({ title: '', questions: [] }));
-      
+
       submitDeck({ key, deck });
 
       Keyboard.dismiss();

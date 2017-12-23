@@ -14,7 +14,7 @@ export default class TextBox extends Component {
   render() {
     return (
       <TextInput
-        style={{height: 35, width: 300, borderColor: black, borderWidth: 1}}
+        style={{ height: 35, width: 300, borderColor: black, borderWidth: 1 }}
         onChangeText={(text) => this.setState({ text })}
         value={this.state.text}
       />

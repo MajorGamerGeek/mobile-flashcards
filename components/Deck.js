@@ -17,7 +17,7 @@ class Deck extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.textStyles}>{deck.questions && deck.questions.length } Card(s) in Deck</Text>
+        <Text style={styles.textStyles}>{deck.questions && deck.questions.length} Card(s) in Deck</Text>
         <Text style={styles.textStyles}>{deck.title}</Text>
         <TextButton onPress={() => navigation.navigate("NewCard", { deckId: deck.title })}>Add Card</TextButton>
         {deck.questions.length > 0 && <TextButton onPress={() => navigation.navigate("Quiz", { deckId: deck.title })}>Start Quiz</TextButton>}

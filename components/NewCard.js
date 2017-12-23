@@ -20,8 +20,7 @@ class NewCard extends Component {
     const { deck, deckId, navigation } = this.props;
     const card = this.state;
 
-    if (card && card.question !== '' && card.anwser !== '')
-    {
+    if (card && card.question !== '' && card.anwser !== '') {
       this.props.dispatch(addCardToDeck(deckId, card))
 
       this.setState(() => ({ question: '', anwser: '' }));
@@ -32,7 +31,7 @@ class NewCard extends Component {
       navigation.navigate("Deck", { title: deckId });
     }
   }
-  
+
   render() {
     const { deck } = this.props;
 

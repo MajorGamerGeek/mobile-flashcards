@@ -133,12 +133,12 @@ class Quiz extends Component {
           {questionNumber < deck.questions.length ?
             <View>
               <Animated.View style={[styles.card, frontRotateStyle, { opacity: this.frontOpacity }]}>
-                <Text>{questionNumber + 1} / {deck.questions.length}</Text>
-                <Text>{correctCount} - Correct</Text>
-                <Text>{deck.questions[questionNumber].question}</Text>
+                <Text style={styles.textStyles}>{questionNumber + 1} / {deck.questions.length}</Text>
+                <Text style={styles.textStyles}>{correctCount} - Correct</Text>
+                <Text style={styles.textStyles}>{deck.questions[questionNumber].question}</Text>
               </Animated.View>
               <Animated.View style={[styles.card, styles.anwser, backRotateStyle, { opacity: this.backOpacity }]}>
-                <Text>{deck.questions[questionNumber].anwser}</Text>
+                <Text style={styles.textStyles}>{deck.questions[questionNumber].anwser}</Text>
               </Animated.View>
               {cardFront ? <Text style={styles.textStyles} onPress={this.showAnwser}>Anwser</Text> :
                 <Text style={styles.textStyles} onPress={this.showQuestion}>Question</Text>}
