@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { addDeck } from '../actions'
@@ -36,9 +36,9 @@ class NewDeck extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-        <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 175 }>
-          <Text style={styles.question}>What is the title of your new deck?</Text>
+      <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <Text style={styles.questionText}>What is the title of your new deck?</Text>
           <TextInput
             style={styles.input}
             onChangeText={(title) => this.setState({ title })}
@@ -60,9 +60,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#fff'
   },
-  question: {
+  questionText: {
     fontSize: 30,
     textAlign: 'center'
   },
@@ -70,6 +71,8 @@ const styles = StyleSheet.create({
     height: 35,
     width: 300,
     borderColor: black,
-    borderWidth: 1
+    borderWidth: 1,
+    flexDirection: 'column',
+    margin: 5
   }
 });

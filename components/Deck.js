@@ -17,8 +17,8 @@ class Deck extends Component {
 
     return (
       <View style={styles.container}>
-        <Text>{deck.title}</Text>
-        <Text style={styles.cards}>{deck.questions && deck.questions.length } Card(s)</Text>
+        <Text style={styles.textStyles}>{deck.questions && deck.questions.length } Card(s) in Deck</Text>
+        <Text style={styles.textStyles}>{deck.title}</Text>
         <TextButton onPress={() => navigation.navigate("NewCard", { deckId: deck.title })}>Add Card</TextButton>
         {deck.questions.length > 0 && <TextButton onPress={() => navigation.navigate("Quiz", { deckId: deck.title })}>Start Quiz</TextButton>}
       </View>
@@ -39,6 +39,14 @@ export default connect(mapStateToProps)(Deck);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  textStyles: {
+    color: '#000',
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 5
   },
 });

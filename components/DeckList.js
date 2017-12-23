@@ -20,11 +20,8 @@ class DeckList extends Component {
   }
 
   render() {
-    const { decks } = this.props
-    const { ready } = this.state
-
-    console.log(decks);
-    console.log(ready);
+    const { decks } = this.props;
+    const { ready } = this.state;
 
     if (ready === false) {
       return <AppLoading />

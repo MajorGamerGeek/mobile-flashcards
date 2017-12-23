@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, Platform, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 
@@ -62,23 +62,21 @@ class Quiz extends Component {
 
     if (!cardFront) {
       Animated.spring(cardRotate, { toValue: 0, friction: 7, tension: 10, useNativeDriver: true }).start();
-
-      this.setState(() => { cardFront: true });
     }
   }
 
   correct = () => {
     const prevState = this.state;
-    
+
     this.showCardFront();
-    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount + 1 }));
+    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, correctCount: prevState.correctCount + 1, cardFront: true }));
   }
 
   incorrect = () => {
     const prevState = this.state;
 
     this.showCardFront();
-    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1 }));
+    this.setState((prevState) => ({ questionNumber: prevState.questionNumber + 1, cardFront: true }));
   }
 
   showAnwser = () => {
@@ -105,17 +103,13 @@ class Quiz extends Component {
 
   navigateHome = () => {
     const { navigation } = this.props;
-    
+
     navigation.navigate("Home");
   }
 
   render() {
     const { deck } = this.props;
-    const { correctCount, questionNumber } = this.state;
-
-    console.log(deck);
-    console.log(correctCount);
-    console.log(deck.questions.length);
+    const { correctCount, questionNumber, cardFront } = this.state;
 
     const frontRotateStyle = {
       transform: [
@@ -135,28 +129,28 @@ class Quiz extends Component {
 
     return (
       <View style={styles.container}>
-      {deck.questions.length > 0 && <View>
-        {questionNumber < deck.questions.length ?
-          <View>
-            <Animated.View style={[styles.card, frontRotateStyle, { opacity: this.frontOpacity }]}>
-              <Text>{questionNumber + 1} / {deck.questions.length}</Text>
-              <Text>{correctCount} - Correct</Text>
-              <Text>{deck.questions[questionNumber].question}</Text>
-              <Text style={styles.textStyles} onPress={this.showAnwser}>Show Anwser</Text>
-            </Animated.View>
-            <Animated.View style={[styles.card, styles.anwser, backRotateStyle, { opacity: this.backOpacity }]}>
-              <Text>{deck.questions[questionNumber].anwser}</Text>
-              <Text style={styles.textStyles} onPress={this.showQuestion}>Question</Text>
-            </Animated.View>
-            <TextButton onPress={this.correct}>Correct</TextButton>
-            <TextButton onPress={this.incorrect}>Incorrect</TextButton>
-          </View> :
-          <View>
-            <Text>Completed Quiz Well DONE!</Text>
-            <Text>{Math.round(((correctCount / deck.questions.length) * 100) * 100) / 100}% Correct</Text>
-            <TextButton onPress={this.startOver}>Start Over</TextButton>
-            <TextButton onPress={this.navigateHome}>Select a Deck</TextButton>
-          </View>}
+        {deck.questions.length > 0 && <View>
+          {questionNumber < deck.questions.length ?
+            <View>
+              <Animated.View style={[styles.card, frontRotateStyle, { opacity: this.frontOpacity }]}>
+                <Text>{questionNumber + 1} / {deck.questions.length}</Text>
+                <Text>{correctCount} - Correct</Text>
+                <Text>{deck.questions[questionNumber].question}</Text>
+              </Animated.View>
+              <Animated.View style={[styles.card, styles.anwser, backRotateStyle, { opacity: this.backOpacity }]}>
+                <Text>{deck.questions[questionNumber].anwser}</Text>
+              </Animated.View>
+              {cardFront ? <Text style={styles.textStyles} onPress={this.showAnwser}>Anwser</Text> :
+                <Text style={styles.textStyles} onPress={this.showQuestion}>Question</Text>}
+              <TextButton onPress={this.correct}>Correct</TextButton>
+              <TextButton onPress={this.incorrect}>Incorrect</TextButton>
+            </View> :
+            <View style={styles.container}>
+              <Text style={styles.textStyles}>You have completed the {deck.title} Quiz!</Text>
+              <Text style={styles.textStyles}>{Math.round(((correctCount / deck.questions.length) * 100) * 100) / 100}% Correct</Text>
+              <TextButton onPress={this.startOver}>Start Over</TextButton>
+              <TextButton onPress={this.navigateHome}>Select a Deck</TextButton>
+            </View>}
         </View>}
       </View>
     )
@@ -177,24 +171,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff'
   },
   textStyles: {
-    color: '#aef',
-    fontSize: 20
+    color: '#000',
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 2
   },
   card: {
-    height: 400,
-    width: 300,
-    backgroundColor: 'green',
+    height: 325,
+    width: 275,
+    backgroundColor: '#f5f5f5',
+    borderWidth: 0.2,
+    borderRadius: Platform.OS === "ios" ? 18 : 8,
+    shadowRadius: 12,
+    shadowOpacity: 0.9,
+    shadowColor: "rgba(0, 0, 0, 0.30)",
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 15,
     alignItems: 'center',
     justifyContent: 'center',
     backfaceVisibility: 'hidden'
   },
   anwser: {
-    height: 200,
-    width: 150,
-    backgroundColor: 'red',
+    backgroundColor: '#e8e8e8',
     position: 'absolute',
     top: 0
   }

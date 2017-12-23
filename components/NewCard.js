@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { addCardToDeck } from '../actions';
@@ -37,8 +37,8 @@ class NewCard extends Component {
     const { deck } = this.props;
 
     return (
-      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-        <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 200 }>
+      <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
           <Text style={styles.question}>Question</Text>
           <TextInput
             style={styles.input}
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff'
   },
   question: {
     fontSize: 30,
