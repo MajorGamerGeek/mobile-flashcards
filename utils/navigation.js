@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { StackNavigator, TabNavigator } from 'react-navigation';
+import { Ionicons } from '@expo/vector-icons';
 import DeckList from '../components/DeckList';
 import NewDeck from '../components/NewDeck';
 import NewCard from '../components/NewCard';

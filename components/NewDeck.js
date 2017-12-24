@@ -17,12 +17,12 @@ class NewDeck extends Component {
   }
 
   submit = () => {
-    const { navigation } = this.props;
+    const { navigation, addDeck } = this.props;
     const key = this.state.title;
     const deck = this.state;
 
     if (deck && deck.title !== '') {
-      this.props.dispatch(addDeck({ [key]: deck }));
+      addDeck({ [key]: deck });
 
       this.setState(() => ({ title: '', questions: [] }));
 
@@ -53,7 +53,7 @@ class NewDeck extends Component {
   }
 }
 
-export default connect()(NewDeck);
+export default connect(null, { addDeck })(NewDeck);
 
 const styles = StyleSheet.create({
   container: {
